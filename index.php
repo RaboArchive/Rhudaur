@@ -10,7 +10,7 @@
             require_once('./views/header.php');
         ?>
         <?php
-            require_once('./controlers/main.php');
+            require_once('./controllers/main.php');
         ?>
         <?php
             require_once('./views/footer.html');
