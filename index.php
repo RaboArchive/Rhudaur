@@ -1,0 +1,19 @@
+<?php
+    session_start();
+?>
+<html>
+    <header>
+    </header>
+    <body>
+        <?php
+            // Contains header + nav bar
+            require_once('./views/header.php');
+        ?>
+        <?php
+            require_once('./controlers/main.php');
+        ?>
+        <?php
+            require_once('./views/footer.html');
+        ?>
+    </body>
+</html>
