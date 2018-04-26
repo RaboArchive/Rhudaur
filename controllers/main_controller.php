@@ -1,39 +1,55 @@
 <?php
-    class main_controller {
+    class Main_Controller {
         public function __construct () {}
         
         public function route ($action) {
-            echo $action;
+            echo "$action <br>";
             $action = $this->sanitize($action);
             switch ($action) {
                 case "topic":
-                    echo "TODO : $action";
+                    $this->topic();
                 break;
                 case "user":
-                    echo "TODO : $action";
+                    $this->user();
                 break;
                 case "login":
-                    echo "TODO : $action";
+                    $this->login();
                 break;
                 case "logout":
-                    echo "TODO : $action";
+                    $this->logout();
                 break;
                 case "register":
-                    echo "TODO : $action";
+                    $this->register();
                 break;
                 default: 
-                    echo "TODO : $action";
+                    $this->index();
             }
         }
 
-        private function displayTopic () {
-            require_once("./controllers/display_controller.php");
+        private function index () {
+            require_once("./controllers/topic_controller.php");
+            displayAllTopics();
+        }
+        private function topic () {
+            require_once("./controllers/topic_controller.php");
+        }
+        private function user () {
+            //require_once("./controllers/topic_controller.php");
+        }
+        private function login () {
+            //require_once("./controllers/topic_controller.php");
+        }
+        private function logout () {
+            //require_once("./controllers/topic_controller.php");
+        }
+        private function register () {
+            //require_once("./controllers/topic_controller.php");
         }
 
+        // Utils
         // Clean received string
         private function sanitize ($data) {
-            // TODO
-            return $data;
+            return htmlspecialchars($data);
         }
       }
 ?>

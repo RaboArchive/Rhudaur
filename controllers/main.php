@@ -1,6 +1,6 @@
 <?php
-    require_once('./controlers/main_controler.php');
-    $controler = new main_controler(); 
+    require_once('./controllers/main_controller.php');
+    $controler = new Main_Controller(); 
 
     // pre-treatment of the params
     $action = '';
