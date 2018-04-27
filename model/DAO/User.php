@@ -17,15 +17,34 @@ class User
      */
     private $admin;
 
+   private function __construct() {}
+
     /**
-     * User constructor.
      * @param array $sqlArray
+     * @return User
      */
-    public function __construct(array $sqlArray)
+    public static function fromDB(array $sqlArray)
     {
-        $this->username = $sqlArray['username'];
-        $this->password = $sqlArray['password'];
-        $this->admin = $sqlArray['admin'];
+        $u = new self();
+        $u->username = $sqlArray['username'];
+        $u->password = $sqlArray['password'];
+        $u->admin = $sqlArray['admin'];
+        return $u;
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @param bool $admin
+     * @return User
+     */
+    public static function fromArgs(string $username, string $password, bool $admin)
+    {
+        $u = new self();
+        $u->username = $username;
+        $u->password = $password;
+        $u->admin = $admin;
+        return $u;
     }
 
     /**
