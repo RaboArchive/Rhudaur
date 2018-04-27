@@ -9,9 +9,14 @@ class PDOForum
 {
 
     /**
+     * @var PDO
+     */
+    public $conn;
+
+    /**
      * @return PDO
      */
-    private static function connect()
+    public function __construct()
     {
         return new PDO("sqlite:../model/projet-forum.db");
     }
@@ -21,10 +26,9 @@ class PDOForum
      * @param string $username
      * @return User
      */
-    public static function getUser(string $username)
+    public function getUser(string $username)
     {
-        $conn = self::connect();
-        $q = $conn->prepare('SELECT * FROM users WHERE users.username = :username');
+        $q = $this->conn->prepare('SELECT * FROM users WHERE users.username = :username');
         $q->execute([':username' => $username]);
         return $q->fetch();
     }
@@ -33,7 +37,7 @@ class PDOForum
      * @param PDO $conn
      * @param User $user
      */
-    public static function saveUser(User $user)
+    public function saveUser(User $user)
     {
         throw new BadMethodCallException("Not implemented yet.");
     }
@@ -43,10 +47,9 @@ class PDOForum
      * @param int $tid
      * @return Topic
      */
-    public static function getTopic(int $tid)
+    public function getTopic(int $tid)
     {
-        $conn = self::connect();
-        $q = $conn->prepare('SELECT * FROM topics WHERE topics.id = :tid');
+        $q = $this->conn->prepare('SELECT * FROM topics WHERE topics.id = :tid');
         $q->execute([':tid' => $tid]);
         return $q->fetch();
     }
@@ -55,10 +58,9 @@ class PDOForum
      * @param PDO $conn
      * @return array
      */
-    public static function getAllTopics()
+    public function getAllTopics()
     {
-        $conn = self::connect();
-        $q = $conn->prepare('SELECT * FROM topics');
+        $q = $this->conn->prepare('SELECT * FROM topics');
         $q->execute();
         return $q->fetchAll();
     }
@@ -69,7 +71,7 @@ class PDOForum
      * @param PDO $conn
      * @param Topic $topic
      */
-    public static function saveTopic(Topic $topic)
+    public function saveTopic(Topic $topic)
     {
         throw new BadMethodCallException("Not implemented yet.");
     }
@@ -80,10 +82,9 @@ class PDOForum
      * @param int $mid
      * @return Message
      */
-    public static function getMessage(int $tid, int $mid)
+    public function getMessage(int $tid, int $mid)
     {
-        $conn = self::connect();
-        $q = $conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid and messages.position = :index');
+        $q = $this->conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid and messages.position = :index');
         $q->execute([':tid' => $tid, ':index' => $mid]);
         return new Message($q->fetch());
     }
@@ -93,15 +94,14 @@ class PDOForum
      * @param Topic $t
      * @return array
      */
-    public static function getMessagesInTopic(Topic $t)
+    public function getMessagesInTopic(Topic $t)
     {
-        $conn = self::connect();
-        $q = $conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid order by date');
+        $q = $this->conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid order by date');
         $q->execute([':tid' => $t->getId()]);
         $retval = [];
         foreach ($q->fetchAll() as $messageArray)
         {
-            array_push($retval,$messageArray);
+            array_push($retval, $messageArray);
         }
         return $retval;
     }
