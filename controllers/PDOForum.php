@@ -42,6 +42,19 @@ class PDOForum
 
     /**
      * @param PDO $conn
+     * @return array
+     */
+    public static function getAllTopics(PDO $conn)
+    {
+        $q = $conn->prepare('SELECT * FROM topics');
+        $q->execute();
+        return $q->fetchAll();
+    }
+
+
+
+    /**
+     * @param PDO $conn
      * @param Topic $topic
      */
     public static function saveTopic(PDO $conn, Topic $topic)
@@ -68,5 +81,5 @@ class PDOForum
         throw new BadMethodCallException("Not implemented yet.");
     }
 
-    public static function new
+
 }
