@@ -18,7 +18,7 @@ class PDOForum
      */
     public function __construct()
     {
-        return new PDO("sqlite:../model/projet-forum.db");
+        $this->conn = new PDO("sqlite:model/projet-forum.db");
     }
 
     /**
