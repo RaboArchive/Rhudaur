@@ -18,7 +18,7 @@ class PDOForum
      */
     public function __construct()
     {
-        return new PDO("sqlite:../model/projet-forum.db");
+        $this->conn = new PDO("sqlite:model/projet-forum.db");
     }
 
     /**
@@ -30,8 +30,8 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM users WHERE users.username = :username');
         $q->execute([':username' => $username]);
-        return $q->fetch();
-    }
+        return new User($q->fetch());
+    }/** @noinspection PhpUnusedParameterInspection */
 
     /**
      * @param PDO $conn
@@ -51,7 +51,7 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM topics WHERE topics.id = :tid');
         $q->execute([':tid' => $tid]);
-        return $q->fetch();
+        return new Topic($q->fetch());
     }
 
     /**
@@ -62,9 +62,13 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM topics');
         $q->execute();
-        return $q->fetchAll();
+        $retval = [];
+        foreach ($q->fetchAll() as $topicArray)
+        {
+            array_push($retval, $topicArray);
+        }
+        return $retval;
     }
-
 
 
     /**
@@ -106,10 +110,12 @@ class PDOForum
         return $retval;
     }
 
-    public static function saveMessage(Message $mess)
+    public static function saveMessage(
+        Message $mess)
     {
         throw new BadMethodCallException("Not implemented yet.");
     }
+
 
 
 }
