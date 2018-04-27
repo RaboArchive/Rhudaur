@@ -75,6 +75,22 @@ class PDOForum
         return new Message($q->fetch());
     }
 
+    /**
+     * @param PDO $conn
+     * @param Topic $t
+     * @return array
+     */
+    public static function getMessagesInTopic(PDO $conn, Topic $t)
+    {
+        $q = $conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid order by date');
+        $q->execute([':tid' => $t->getId()]);
+        $retval = [];
+        foreach ($q->fetchAll() as $messageArray)
+        {
+            array_push($retval,$messageArray);
+        }
+        return $retval;
+    }
 
     public static function saveMessage(PDO $conn, Message $mess)
     {
