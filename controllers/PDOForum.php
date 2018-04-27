@@ -1,8 +1,8 @@
 <?php
 
-require_once('../model/DAO/Message.php');
-require_once('../model/DAO/User.php');
-require_once('../model/DAO/Topic.php');
+require_once('model/DAO/Message.php');
+require_once('model/DAO/User.php');
+require_once('model/DAO/Topic.php');
 
 
 class PDOForum

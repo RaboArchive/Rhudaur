@@ -1,6 +1,11 @@
 <?php
+    require_once('controllers/display_controller.php');
+    require_once('controllers/PDOForum.php');
     class Main_Controller {
-        public function __construct () {}
+        public function __construct () {
+            $this->PDO = new PDOForum();
+            $this->DisplayControler = new Display_Controller($this->PDO);
+        }
         
         public function route ($action) {
             echo "& $action &";
@@ -27,11 +32,10 @@
         }
 
         private function index () {
-            require_once("./controllers/topic_controller.php");
-            displayAllTopics();
+            $this->DisplayControler->displayAllTopics();
         }
         private function topic () {
-            require_once("./controllers/topic_controller.php");
+            // TODO
         }
         private function user () {
             //require_once("./controllers/topic_controller.php");
@@ -44,10 +48,14 @@
             }
         }
         private function logout () {
-            //require_once("./controllers/topic_controller.php");
+            // TODO
         }
         private function register () {
-            //require_once("./controllers/topic_controller.php");
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                require_once('./views/components/register.html');
+            } else { // POST
+                 echo 'POST';
+            }
         }
 
         // Utils
