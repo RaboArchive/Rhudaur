@@ -20,7 +20,7 @@ class Message
     /**
      * @var string
      */
-    private $message;
+    private $content;
 
     /**
      * @var DateTime
@@ -29,15 +29,41 @@ class Message
 
     /**
      * Message constructor.
-     * @param array $sqlArray Array returned from database
      */
-    public function __construct(array $sqlArray)
+    private function __construct() {}
+
+    /**
+     * @param array $sqlArray Array returned from database
+     * @return Message
+     */
+    public static function fromDB(array $sqlArray)
     {
-        $this->author =             $sqlArray['authorid'];
-        $this->message =            $sqlArray['message'];
-        $this->topic =              $sqlArray['topicid'];
-        $this->positionInTopic =    $sqlArray['position'];
-        $this->datetime =           new DateTime($sqlArray['date']);
+        $message = new self();
+        $message->author =             $sqlArray['authorid'];
+        $message->content =            $sqlArray['message'];
+        $message->topic =              $sqlArray['topicid'];
+        $message->positionInTopic =    $sqlArray['position'];
+        $message->datetime =           new DateTime($sqlArray['date']);
+        return $message;
+    }
+
+    /**
+     * @param int $authorid
+     * @param string $message
+     * @param int $topicId
+     * @param int $positionInTopic
+     * @param DateTime $dt
+     * @return Message
+     */
+    public static function fromArgs(int $authorid, string $message, int $topicId, int $positionInTopic, DateTime $dt)
+    {
+        $m = new self();
+        $m->author = $authorid;
+        $m->content = $message;
+        $m->topic = $topicId;
+        $m->positionInTopic = $positionInTopic;
+        $m->datetime = $dt;
+        return $m;
     }
 
     /**
@@ -67,9 +93,9 @@ class Message
     /**
      * @return string
      */
-    public function getMessage()
+    public function getContent()
     {
-        return $this->message;
+        return $this->content;
     }
 
 

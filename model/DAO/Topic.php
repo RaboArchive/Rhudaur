@@ -24,18 +24,44 @@ class Topic
      */
     private $lastMessageDate;
 
+
+
+
     /**
-     * Topic constructor.
-     * @var array $sqlArray
+     * Topic constructor. Private as we build it with Topic::fromDB or Topic::fromArgs.
      */
-    public function __construct(array $sqlArray)
+    private function __construct() {}
+
+    /**
+     * @param array $sqlArray Array returned from database
+     * @return Topic
+     */
+    public static function fromDB(array $sqlArray)
     {
-        $this->id = $sqlArray['id'];
-        $this->name = $sqlArray['name'];
-        $this->locked = (bool) $sqlArray['locked'];
-        $this->lastMessageDate = new DateTime($sqlArray['lastMessageDate']);
+        $t = new self();
+        $t->id = $sqlArray['id'];
+        $t->name = $sqlArray['name'];
+        $t->locked = (bool) $sqlArray['locked'];
+        $t->lastMessageDate = new DateTime($sqlArray['lastMessageDate']);
+        return $t;
     }
 
+    /**
+     * @param int $id
+     * @param string $name
+     * @param bool $locked
+     * @param DateTime $lastMessageDate
+     * @return Topic
+     */
+    public static function fromArgs(int $id, string $name, bool $locked, DateTime $lastMessageDate)
+    {
+        $t = new self();
+        $t->id = $id;
+        $t->name = $name;
+        $t->locked = $locked;
+        $t->lastMessageDate = $lastMessageDate;
+        return $t;
+    }
 
     /**
      * @return int

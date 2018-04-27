@@ -14,7 +14,7 @@ class PDOForum
     public $conn;
 
     /**
-     * @return PDO
+     * PDOForum constructor.
      */
     public function __construct()
     {
@@ -22,7 +22,6 @@ class PDOForum
     }
 
     /**
-     * @param PDO $conn
      * @param string $username
      * @return User
      */
@@ -30,11 +29,10 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM users WHERE users.username = :username');
         $q->execute([':username' => $username]);
-        return new User($q->fetch());
-    }/** @noinspection PhpUnusedParameterInspection */
+        return User::fromDB($q->fetch());
+    }
 
     /**
-     * @param PDO $conn
      * @param User $user
      */
     public function saveUser(User $user)
@@ -43,7 +41,6 @@ class PDOForum
     }
 
     /**
-     * @param PDO $conn
      * @param int $tid
      * @return Topic
      */
@@ -51,11 +48,10 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM topics WHERE topics.id = :tid');
         $q->execute([':tid' => $tid]);
-        return new Topic($q->fetch());
+        return Topic::fromDB($q->fetch());
     }
 
     /**
-     * @param PDO $conn
      * @return array
      */
     public function getAllTopics()
@@ -65,14 +61,13 @@ class PDOForum
         $retval = [];
         foreach ($q->fetchAll() as $topicArray)
         {
-            array_push($retval, $topicArray);
+            array_push($retval, Topic::fromDB($topicArray));
         }
         return $retval;
     }
 
 
     /**
-     * @param PDO $conn
      * @param Topic $topic
      */
     public function saveTopic(Topic $topic)
@@ -81,7 +76,6 @@ class PDOForum
     }
 
     /**
-     * @param PDO $conn
      * @param int $tid
      * @param int $mid
      * @return Message
@@ -90,11 +84,10 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid and messages.position = :index');
         $q->execute([':tid' => $tid, ':index' => $mid]);
-        return new Message($q->fetch());
+        return Message::fromDB($q->fetch());
     }
 
     /**
-     * @param PDO $conn
      * @param Topic $t
      * @return array
      */
@@ -105,13 +98,12 @@ class PDOForum
         $retval = [];
         foreach ($q->fetchAll() as $messageArray)
         {
-            array_push($retval, $messageArray);
+            array_push($retval, Message::fromDB($messageArray));
         }
         return $retval;
     }
 
-    public static function saveMessage(
-        Message $mess)
+    public static function saveMessage(Message $mess)
     {
         throw new BadMethodCallException("Not implemented yet.");
     }
