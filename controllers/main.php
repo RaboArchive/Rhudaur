@@ -1,4 +1,6 @@
 <?php
+    echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]<br>";
+
     require_once('./controllers/main_controller.php');
     $controler = new Main_Controller(); 
 

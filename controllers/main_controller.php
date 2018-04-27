@@ -3,7 +3,7 @@
         public function __construct () {}
         
         public function route ($action) {
-            echo "$action <br>";
+            echo "& $action &";
             $action = $this->sanitize($action);
             switch ($action) {
                 case "topic":
@@ -37,7 +37,11 @@
             //require_once("./controllers/topic_controller.php");
         }
         private function login () {
-            //require_once("./controllers/topic_controller.php");
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                require_once('./views/components/login.html');
+            } else { // POST
+                 echo 'POST';
+            }
         }
         private function logout () {
             //require_once("./controllers/topic_controller.php");
@@ -52,4 +56,3 @@
             return htmlspecialchars($data);
         }
       }
-?>
