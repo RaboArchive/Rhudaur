@@ -5,7 +5,7 @@ class User
     /**
      * @var string
      */
-    private $name;
+    private $username;
 
     /**
      * @var string
@@ -18,10 +18,21 @@ class User
     private $admin;
 
     /**
+     * User constructor.
+     * @param array $sqlArray
+     */
+    public function __construct(array $sqlArray)
+    {
+        $this->username = $sqlArray['username'];
+        $this->password = $sqlArray['password'];
+        $this->admin = $sqlArray['admin'];
+    }
+
+    /**
      * @return string
      */
-    public function getName() {
-        return $this->name;
+    public function getUsername() {
+        return $this->username;
     }
 
     /**
@@ -37,6 +48,6 @@ class User
      * @return bool
      */
     public function isAdmin() {
-        return $this->admin();
+        return $this->admin;
     }
 }

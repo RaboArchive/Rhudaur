@@ -23,6 +23,24 @@ class Message
     private $message;
 
     /**
+     * @var DateTime
+     */
+    private $datetime;
+
+    /**
+     * Message constructor.
+     * @param array $sqlArray Array returned from database
+     */
+    public function __construct(array $sqlArray)
+    {
+        $this->author =             $sqlArray['authorid'];
+        $this->message =            $sqlArray['message'];
+        $this->topic =              $sqlArray['topicid'];
+        $this->positionInTopic =    $sqlArray['position'];
+        $this->datetime =           new DateTime($sqlArray['date']);
+    }
+
+    /**
      * @return User
      */
     public function getAuthor()
