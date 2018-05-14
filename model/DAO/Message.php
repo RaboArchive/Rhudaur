@@ -99,5 +99,13 @@ class Message
         return $this->content;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getDatetime(): DateTime
+    {
+        return $this->datetime;
+    }
+
 
 }

@@ -69,7 +69,6 @@ class User
      * @return bool
      */
     public function checkPassword(string $testValue) {
-        // FIXME: introduce crypto asap
         return password_verify($testValue, $this->getPasswordHash());
     }
 
