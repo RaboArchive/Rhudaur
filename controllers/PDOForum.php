@@ -55,6 +55,20 @@ class PDOForum
             $q->execute([':username'=>$user->getUsername(), ':password'=>$user->getPasswordHash(), ':admin'=>$user->isAdmin()]);
         }
     }
+
+    /**
+     * @param string $name
+     * @return Topic
+     */
+    public function newTopic(string $name)
+    {
+        $id = $this->conn->query('SELECT id FROM topics ORDER BY id DESC LIMIT 1')->fetch();
+
+        $topic = Topic::fromArgs($id, $name, false, new DateTime('now'));
+        $this->saveTopic($topic);
+        return $topic;
+    }
+
     /**
      * @param int $tid
      * @return Topic
@@ -84,10 +98,17 @@ class PDOForum
 
     /**
      * @param Topic $topic
+     * @return int Number of rows affected, should be 1
      */
     public function saveTopic(Topic $topic)
     {
-        throw new BadMethodCallException("Not implemented yet.");
+        if (!empty($this->getTopic($topic->getId()))) { // Topic exists
+            $q = $this->conn->prepare('UPDATE topics SET name=:name, locked=:locked, lastMessageDate=:lastMessageDate');
+            return $q->execute([':name' => $topic->getName(), ':locked'=>$topic->isLocked(), ':lastMessageDate'=>$topic->getLastMessageDate()]);
+        } else { // New topic
+            $q = $this->conn->prepare('INSERT INTO topics(id, name, locked, lastMessageDate) VALUES (:id, :name, :locked, :lastMessageDate)');
+            return $q->execute([':id'=>$topic->getId(), ':name'=>$topic->getName(), ':locked'=>$topic->isLocked(), ':lastMessageDate'=>$topic->getLastMessageDate()]);
+        }
     }
 
     /**
