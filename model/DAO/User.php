@@ -25,6 +25,7 @@ class User
      */
     public static function fromDB(array $sqlArray)
     {
+        if(empty($sqlArray)) return null;
         $u = new self();
         $u->username = $sqlArray['username'];
         $u->password = $sqlArray['password'];
@@ -55,13 +56,31 @@ class User
     }
 
     /**
+     * @param string $clearPass
+     * @return bool|string
+     */
+    public function setPassword(string $clearPass)
+    {
+        return password_hash($clearPass, PASSWORD_BCRYPT);
+    }
+
+    /**
      * @param string $testValue
      * @return bool
      */
     public function checkPassword(string $testValue) {
         // FIXME: introduce crypto asap
-        return $testValue === $this->password;
+        return password_verify($testValue, $this->getPasswordHash());
     }
+
+    /**
+     * @return string
+     */
+    public function getPasswordHash()
+    {
+        return $this->password;
+    }
+
 
     /**
      * @return bool

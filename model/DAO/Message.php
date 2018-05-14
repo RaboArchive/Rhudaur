@@ -38,6 +38,7 @@ class Message
      */
     public static function fromDB(array $sqlArray)
     {
+        if(empty($sqlArray)) return null;
         $message = new self();
         $message->author =             $sqlArray['authorid'];
         $message->content =            $sqlArray['message'];

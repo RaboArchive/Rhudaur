@@ -38,6 +38,7 @@ class Topic
      */
     public static function fromDB(array $sqlArray)
     {
+        if (empty($sqlArray)) return null;
         $t = new self();
         $t->id = $sqlArray['id'];
         $t->name = $sqlArray['name'];
