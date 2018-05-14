@@ -79,4 +79,12 @@ class Topic
     {
         return $this->name;
     }
+
+    /**
+     * @return bool
+     */
+    public function isLocked()
+    {
+        return $this->locked;
+    }
 }
