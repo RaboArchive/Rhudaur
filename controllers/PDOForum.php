@@ -32,14 +32,29 @@ class PDOForum
         return User::fromDB($q->fetch());
     }
 
+    public function newUser(string $username, string $password, bool $admin = false)
+    {
+        if (!empty($this->getUser($username)))  // User exists
+            throw new Exception("User with this name already exists.");
+
+        $user = User::fromArgs($username, $password, $admin);
+        $this->saveUser($user);
+        return $user;
+    }
+
     /**
      * @param User $user
      */
     public function saveUser(User $user)
     {
-        throw new BadMethodCallException("Not implemented yet.");
+        if (!empty($this->getUser($user->getUsername()))) { // User exists
+            $q = $this->conn->prepare('UPDATE users SET password=:pw, admin=:adm');
+            $q->execute([':pw' => $user->getPasswordHash(), ':adm'=>$user->isAdmin()]);
+        } else {
+            $q = $this->conn->prepare('INSERT INTO users(username, password, admin) VALUES (:username, :password, :admin)');
+            $q->execute([':username'=>$user->getUsername(), ':password'=>$user->getPasswordHash(), ':admin'=>$user->isAdmin()]);
+        }
     }
-
     /**
      * @param int $tid
      * @return Topic
