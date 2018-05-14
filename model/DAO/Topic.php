@@ -87,4 +87,20 @@ class Topic
     {
         return $this->locked;
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getLastMessageDate()
+    {
+        return $this->lastMessageDate;
+    }
+
+    /**
+     * @param bool $locked
+     */
+    public function setLocked(bool $locked)
+    {
+        $this->locked = $locked;
+    }
 }
