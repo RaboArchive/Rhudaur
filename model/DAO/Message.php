@@ -56,11 +56,11 @@ class Message
      * @param DateTime $dt
      * @return Message
      */
-    public static function fromArgs(int $authorid, string $message, int $topicId, int $positionInTopic, DateTime $dt)
+    public static function fromArgs(string $authorid, string $message, int $topicId, int $positionInTopic, DateTime $dt)
     {
         $m = new self();
         $m->author = $authorid;
-        $m->content = $messageget;
+        $m->content = $message;
         $m->topic = $topicId;
         $m->positionInTopic = $positionInTopic;
         $m->datetime = $dt;

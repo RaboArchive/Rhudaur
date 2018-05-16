@@ -38,10 +38,12 @@
            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $this->DisplayController->displayTopic($_GET['t']);
            } else {
-               // add msg to db
-
-               // then display the topic
-               $this->DisplayController->displayTopic($_POST['t']);
+                // add msg to db
+                if (true) {
+                    var_dump($this->PDO->newMessage($_POST['text'], (int)$_POST['t'], 'admin', $_POST['p']));
+                }
+                // then display the topic
+                $this->DisplayController->displayTopic($_POST['t']);
            }
         }
          private function user () {

@@ -113,7 +113,7 @@ class PDOForum
 
 
 
-    public function newMessage(String $message, int $topicID, int $authorID, int $positionInTopic)
+    public function newMessage(String $message, int $topicID, string $authorID, int $positionInTopic)
     {
         $m = Message::fromArgs($authorID, $message, $topicID, $positionInTopic, new DateTime('now'));
         $this->saveMessage($m);
@@ -129,7 +129,12 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid and messages.position = :index');
         $q->execute([':tid' => $tid, ':index' => $mid]);
-        return Message::fromDB($q->fetch());
+        $res = $q->fetch();
+        if (!res) {
+            return null;
+        } else {
+            return Message::fromDB($q->fetch());
+        }
     }
 
     /**
@@ -152,10 +157,10 @@ class PDOForum
     {
         if (!empty($this->getMessage($mess->getTopic(), $mess->getPositionInTopic()))) { // Message exists
             $q = $this->conn->prepare('UPDATE messages SET message=:mess, authorid=:author, date=:date, position=:position');
-            return $q->execute([':mess' => $mess->getContent(), ':author'=>$mess->getAuthor()->getUsername(), ':date'=>$mess->getDatetime(), ':position'=>$mess->getPositionInTopic()]);
+            return $q->execute([':mess' => $mess->getContent(), ':author'=>$mess->getAuthor(), ':date'=>$mess->getDatetime()->format('Y-m-d H:i:s'), ':position'=>$mess->getPositionInTopic()]);
         } else { // New message
             $q = $this->conn->prepare('INSERT INTO messages(topicid, position, message, authorid, date) VALUES (:topic, :pos, :mess, :author, :date)');
-            return $q->execute([':topic' => $mess->getTopic(), ':pos'=>$mess->getPositionInTopic(), ':mess' => $mess->getContent(), ':author'=>$mess->getAuthor()->getUsername(), ':date'=>$mess->getDatetime()]);
+            return $q->execute([':topic' => $mess->getTopic(), ':pos'=>$mess->getPositionInTopic(), ':mess' => $mess->getContent(), ':author'=>$mess->getAuthor(), ':date'=>$mess->getDatetime()]);
         }
     }
 }

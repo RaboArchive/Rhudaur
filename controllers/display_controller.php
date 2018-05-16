@@ -26,7 +26,9 @@
         public function displayTopic (int $id) {
             $topic = $this->PDO->getTopic($id);
             $toPrint = '<div id="messageContainer">';
-            foreach ($this->PDO->getMessagesInTopic($topic) as $message) {
+            $messages = $this->PDO->getMessagesInTopic($topic);
+            $pos = sizeof($messages) + 1;
+            foreach ($messages as $message) {
                 $toPrint = $toPrint . "<div class='row message'>";
                 $toPrint = $toPrint . "<div class='col s12 headerMsg'><p>". $message->getDatetime()->format('Y-m-d H:i:s') ."</p></div>";
                 $toPrint = $toPrint . "<div class='col s3 userMsg'><p>" . $this->PDO->getUser($message->getAuthor())->getUsername() ."</p></div>";
