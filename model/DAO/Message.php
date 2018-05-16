@@ -60,7 +60,7 @@ class Message
     {
         $m = new self();
         $m->author = $authorid;
-        $m->content = $message;
+        $m->content = $messageget;
         $m->topic = $topicId;
         $m->positionInTopic = $positionInTopic;
         $m->datetime = $dt;

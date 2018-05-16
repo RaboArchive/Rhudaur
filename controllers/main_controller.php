@@ -4,7 +4,7 @@
     class Main_Controller {
         public function __construct () {
             $this->PDO = new PDOForum();
-            $this->DisplayControler = new Display_Controller($this->PDO);
+            $this->DisplayController = new Display_Controller($this->PDO);
         }
         
         public function route ($action) {
@@ -32,12 +32,19 @@
         }
 
         private function index () {
-            $this->DisplayControler->displayAllTopics();
+            $this->DisplayController->displayAllTopics();
         }
         private function topic () {
-            // TODO
+           if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                $this->DisplayController->displayTopic($_GET['t']);
+           } else {
+               // add msg to db
+
+               // then display the topic
+               $this->DisplayController->displayTopic($_POST['t']);
+           }
         }
-        private function user () {
+         private function user () {
             //require_once("./controllers/topic_controller.php");
         }
         private function login () {

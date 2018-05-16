@@ -8,3 +8,37 @@ body {
     padding:1em;
     border-radius: 0.3em;
 }
+
+.message {
+    background-color:#37474f;
+    min-height: 15em;
+    margin-bottom: 0.5em;
+    padding:1em;
+    border-radius: 0.3em;
+}
+
+.message .headerMsg {
+    background-color:#ccc5c5;
+    border-bottom: solid 2px black;
+}
+.message .headerMsg p{
+    float:right;
+    margin:0;
+}
+
+.message .userMsg {
+    background-color:#6b6666;
+    min-height:15em;
+    border-right: solid 4px black;
+}
+.message .userMsg p{
+    text-align: center;
+    font-style: bold;
+    font-size: 2em;
+}
+
+.message .contentMsg {
+    background-color:#594e4e;
+    min-height:15em;
+    color:#e2dcdc;
+}

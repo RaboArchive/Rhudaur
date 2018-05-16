@@ -3,6 +3,7 @@
 ?>
 <html>
     <header>
+        <title>Rhudaur - THE forum made in PHP</title>
     </header>
     <body>
         <?php
