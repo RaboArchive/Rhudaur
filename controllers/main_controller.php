@@ -51,19 +51,44 @@
         }
         private function login () {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                require_once('./views/components/login.html');
+                require_once('./views/components/login.php');
             } else { // POST
-                 echo 'POST';
+                 $user = $this->PDO->getUser($_POST['username']);
+                 if ($user->checkPassword($_POST['pass'])) {
+                     session_start();
+                     $_SESSION['user'] = $user;
+                     $this->index();
+                 }
+                 else {
+                     $GLOBALS['retry'] = true;
+                     $this->login();
+                 }
             }
         }
+
         private function logout () {
-            // TODO
+            unset($_SESSION['user']);
+            $this->index();
         }
+
         private function register () {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                require_once('./views/components/register.html');
+                require_once('./views/components/register.php');
             } else { // POST
-                 echo 'POST';
+                try {
+                    if ($_POST['pass1'] === $_POST['pass2']) {
+                        $u = $this->PDO->newUser($_POST['username'], $_POST['pass1'], false);
+                        session_start();
+                        $_SESSION['user'] = $u;
+                        $this->index();
+                    } else {
+                        $GLOBALS['retry'] = "Entered passwords don't match";
+                        $this->register();
+                    }
+                }catch (Exception $e) {
+                    $GLOBALS['retry'] = 'Username already exists';
+                    $this->register();
+                }
             }
         }
 
