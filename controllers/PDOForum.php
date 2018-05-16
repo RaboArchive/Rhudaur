@@ -138,7 +138,7 @@ class PDOForum
      */
     public function getMessagesInTopic(Topic $t)
     {
-        $q = $this->conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid order by date');
+        $q = $this->conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid order by position ASC');
         $q->execute([':tid' => $t->getId()]);
         $retval = [];
         foreach ($q->fetchAll() as $messageArray)
