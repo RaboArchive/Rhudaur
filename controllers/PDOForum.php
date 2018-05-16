@@ -130,7 +130,7 @@ class PDOForum
         $q = $this->conn->prepare('SELECT * FROM messages WHERE messages.topicid = :tid and messages.position = :index');
         $q->execute([':tid' => $tid, ':index' => $mid]);
         $res = $q->fetch();
-        if (!res) {
+        if (!$res) {
             return null;
         } else {
             return Message::fromDB($q->fetch());
@@ -160,7 +160,7 @@ class PDOForum
             return $q->execute([':mess' => $mess->getContent(), ':author'=>$mess->getAuthor(), ':date'=>$mess->getDatetime()->format('Y-m-d H:i:s'), ':position'=>$mess->getPositionInTopic()]);
         } else { // New message
             $q = $this->conn->prepare('INSERT INTO messages(topicid, position, message, authorid, date) VALUES (:topic, :pos, :mess, :author, :date)');
-            return $q->execute([':topic' => $mess->getTopic(), ':pos'=>$mess->getPositionInTopic(), ':mess' => $mess->getContent(), ':author'=>$mess->getAuthor(), ':date'=>$mess->getDatetime()]);
+            return $q->execute([':topic' => $mess->getTopic(), ':pos'=>$mess->getPositionInTopic(), ':mess' => $mess->getContent(), ':author'=>$mess->getAuthor(), ':date'=>$mess->getDatetime()->format('Y-m-d H:i:s')]);
         }
     }
 }
