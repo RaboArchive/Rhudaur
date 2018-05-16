@@ -8,7 +8,7 @@ class Message
     private $author;
 
     /**
-     * @var Topic
+     * @var int
      */
     private $topic;
 
@@ -76,7 +76,7 @@ class Message
     }
 
     /**
-     * @return Topic
+     * @return int
      */
     public function getTopic()
     {
