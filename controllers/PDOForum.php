@@ -111,6 +111,15 @@ class PDOForum
         }
     }
 
+
+
+    public function newMessage(String $message, int $topicID, int $authorID, int $positionInTopic)
+    {
+        $m = Message::fromArgs($authorID, $message, $topicID, $positionInTopic, new DateTime('now'));
+        $this->saveMessage($m);
+        return $m;
+    }
+
     /**
      * @param int $tid
      * @param int $mid
@@ -139,11 +148,14 @@ class PDOForum
         return $retval;
     }
 
-    public static function saveMessage(Message $mess)
+    public function saveMessage(Message $mess)
     {
-        throw new BadMethodCallException("Not implemented yet.");
+        if (!empty($this->getMessage($mess->getTopic(), $mess->getPositionInTopic()))) { // Message exists
+            $q = $this->conn->prepare('UPDATE messages SET message=:mess, authorid=:author, date=:date, position=:position');
+            return $q->execute([':mess' => $mess->getContent(), ':author'=>$mess->getAuthor()->getUsername(), ':date'=>$mess->getDatetime(), ':position'=>$mess->getPositionInTopic()]);
+        } else { // New message
+            $q = $this->conn->prepare('INSERT INTO messages(topicid, position, message, authorid, date) VALUES (:topic, :pos, :mess, :author, :date)');
+            return $q->execute([':topic' => $mess->getTopic(), ':pos'=>$mess->getPositionInTopic(), ':mess' => $mess->getContent(), ':author'=>$mess->getAuthor()->getUsername(), ':date'=>$mess->getDatetime()]);
+        }
     }
-
-
-
 }
