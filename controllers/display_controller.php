@@ -36,6 +36,10 @@
                 $toPrint = $toPrint . '</div>';
             }
             echo "$toPrint </div>";
-            require_once('./views/components/postMessage.php');
+            if (isset($_SESSION['user'])) {
+                require_once('./views/components/postMessage.php');
+            } else {
+                echo "<h3>You must be logged to post messages :)</h3>";
+            }
         }
     }

@@ -10,7 +10,7 @@
                 //if($logged) {
                 //    echo '<li><a href="/user/ID">TODO USER</a></li>';
                 //} else {
-                    echo '<li><a href="/login">login</a></li>';
+                    echo '<li><a href="?action=login">login</a></li>';
                 //}
             ?>
         </ul>
