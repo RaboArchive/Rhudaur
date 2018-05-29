@@ -5,7 +5,7 @@
       <input type="text" name="username" placeholder="Username"><br>
       <input type="password" name="pass" placeholder="Password"><br>
         <?php
-        if ($GLOBALS['retry'] == true)
+        if (isset($GLOBALS['retry']) and $GLOBALS['retry'] == true)
             echo '<p>Incorrect password, try again.</p>'
         ?>
       <input type="submit" value="Submit">

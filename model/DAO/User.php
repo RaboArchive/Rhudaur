@@ -25,7 +25,7 @@ class User
      */
     public static function fromDB(array $sqlArray)
     {
-        if(empty($sqlArray)) return null;
+        if($sqlArray == false) return null;
         $u = new self();
         $u->username = $sqlArray['username'];
         $u->password = $sqlArray['password'];
