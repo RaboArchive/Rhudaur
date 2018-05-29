@@ -29,7 +29,11 @@ class PDOForum
     {
         $q = $this->conn->prepare('SELECT * FROM users WHERE users.username = :username');
         $q->execute([':username' => $username]);
-        return User::fromDB($q->fetch());
+        $u = $q->fetch();
+        if ($u === false)
+            return null;
+        else
+            return User::fromDB($u);
     }
 
     public function newUser(string $username, string $password, bool $admin = false)

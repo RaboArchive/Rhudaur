@@ -1,7 +1,7 @@
 <?php
     require_once('controllers/display_controller.php');
     require_once('controllers/PDOForum.php');
-    class Main_Controller {
+    class MainController {
         public function __construct () {
             $this->PDO = new PDOForum();
             $this->DisplayController = new Display_Controller($this->PDO);
@@ -46,22 +46,22 @@
                 $this->DisplayController->displayTopic($_POST['t']);
            }
         }
-         private function user () {
-            //require_once("./controllers/topic_controller.php");
-        }
-        private function login () {
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+
+
+        private function login (bool $retry = false)
+        {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET' or $retry == true) {
                 require_once('./views/components/login.php');
             } else { // POST
                  $user = $this->PDO->getUser($_POST['username']);
-                 if ($user->checkPassword($_POST['pass'])) {
+                 if ($user != null and $user->checkPassword($_POST['pass'])) {
                      session_start();
-                     $_SESSION['user'] = $user;
+                     $_SESSION['user'] = serialize($user);
                      $this->index();
-                 }
-                 else {
-                     $GLOBALS['retry'] = true;
-                     $this->login();
+                 } else {
+                     error_log("reeeeeeeeeee");
+                     $this->login(true);
                  }
             }
         }
